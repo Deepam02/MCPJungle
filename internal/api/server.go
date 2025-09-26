@@ -3,6 +3,7 @@ package api
 
 import (
 	"fmt"
+	"runtime/debug"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -21,7 +22,27 @@ import (
 const (
 	V0PathPrefix    = "/v0"
 	V0ApiPathPrefix = "/api" + V0PathPrefix
+	defaultVersion  = "dev"
 )
+
+// getVersion returns the server version string, using the same logic as CLI
+func getVersion() string {
+	if info, ok := debug.ReadBuildInfo(); ok && info.Main.Version != "" && info.Main.Version != "(devel)" {
+		return normalizeVersion(info.Main.Version)
+	}
+	return defaultVersion
+}
+
+// normalizeVersion ensures a consistent version format
+func normalizeVersion(v string) string {
+	if v == "" {
+		return v
+	}
+	if v[0] >= '0' && v[0] <= '9' {
+		return "v" + v
+	}
+	return v
+}
 
 type ServerOptions struct {
 	// Port is the HTTP ports to bind the server to
@@ -157,6 +178,13 @@ func (s *Server) setupRouter() (*gin.Engine, error) {
 		"/health",
 		func(c *gin.Context) {
 			c.JSON(200, gin.H{"status": "ok"})
+		},
+	)
+
+	r.GET(
+		"/metadata",
+		func(c *gin.Context) {
+			c.JSON(200, gin.H{"version": getVersion()})
 		},
 	)
 

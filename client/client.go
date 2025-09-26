@@ -2,6 +2,9 @@
 package client
 
 import (
+	"context"
+	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -45,4 +48,35 @@ func (c *Client) newRequest(method, url string, body io.Reader) (*http.Request, 
 		req.Header.Set("Authorization", "Bearer "+c.accessToken)
 	}
 	return req, nil
+}
+
+// ServerMetadata represents the server metadata response
+type ServerMetadata struct {
+	Version string `json:"version"`
+}
+
+// GetServerMetadata fetches metadata information from the server
+func (c *Client) GetServerMetadata(ctx context.Context) (*ServerMetadata, error) {
+	req, err := c.newRequest("GET", c.baseURL+"/metadata", nil)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("server returned status %d", resp.StatusCode)
+	}
+
+	var metadata ServerMetadata
+	if err := json.NewDecoder(resp.Body).Decode(&metadata); err != nil {
+		return nil, err
+	}
+
+	return &metadata, nil
 }
