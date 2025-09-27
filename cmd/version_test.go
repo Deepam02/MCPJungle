@@ -3,7 +3,7 @@ package cmd
 import (
 	"testing"
 
-	"github.com/mcpjungle/mcpjungle/internal/version"
+	"github.com/mcpjungle/mcpjungle/pkg/version"
 )
 
 func TestVersionCommand(t *testing.T) {
@@ -11,16 +11,16 @@ func TestVersionCommand(t *testing.T) {
 	if versionCmd.Use != "version" {
 		t.Errorf("Expected version command Use to be 'version', got %s", versionCmd.Use)
 	}
-	
+
 	if versionCmd.Short != "Print version information" {
 		t.Errorf("Expected version command Short to be 'Print version information', got %s", versionCmd.Short)
 	}
-	
+
 	// Test that annotations are set correctly
 	if versionCmd.Annotations["group"] != string(subCommandGroupBasic) {
 		t.Errorf("Expected group annotation to be '%s', got %s", subCommandGroupBasic, versionCmd.Annotations["group"])
 	}
-	
+
 	if versionCmd.Annotations["order"] != "7" {
 		t.Errorf("Expected order annotation to be '7', got %s", versionCmd.Annotations["order"])
 	}
@@ -44,7 +44,7 @@ func TestGetServerVersion(t *testing.T) {
 		t.Skip("Skipping server version test - requires server integration")
 		return
 	}
-	
+
 	// If apiClient is somehow initialized, test the return signature
 	_, ok := getServerVersion()
 	if ok {

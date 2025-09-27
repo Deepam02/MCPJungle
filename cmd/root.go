@@ -26,7 +26,7 @@ import (
 
 	"github.com/mcpjungle/mcpjungle/client"
 	"github.com/mcpjungle/mcpjungle/cmd/config"
-	"github.com/mcpjungle/mcpjungle/internal/version"
+	"github.com/mcpjungle/mcpjungle/pkg/version"
 	"github.com/spf13/cobra"
 )
 

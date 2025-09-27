@@ -7,7 +7,7 @@ import (
 const defaultVersion = "dev"
 
 // Version can be overridden at build time using:
-// go build -ldflags="-X 'github.com/mcpjungle/mcpjungle/internal/version.Version=v1.2.3'"
+// go build -ldflags="-X 'github.com/mcpjungle/mcpjungle/pkg/version.Version=v1.2.3'"
 var Version = defaultVersion
 
 // GetVersion returns the version string using build info or fallback to default.

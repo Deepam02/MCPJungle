@@ -51,9 +51,9 @@ func (c *Client) newRequest(method, url string, body io.Reader) (*http.Request, 
 	return req, nil
 }
 
-// GetServerMetadata fetches metadata information from the server
+// GetServerMetadata fetches metadata about the MCPJungle server.
 func (c *Client) GetServerMetadata(ctx context.Context) (*types.ServerMetadata, error) {
-	req, err := c.newRequest("GET", c.baseURL+"/metadata", nil)
+	req, err := c.newRequest(http.MethodGet, c.baseURL+"/metadata", nil)
 	if err != nil {
 		return nil, err
 	}
