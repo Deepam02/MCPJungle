@@ -3,7 +3,7 @@ package api
 
 import (
 	"fmt"
-	"runtime/debug"
+	"net/http"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -15,6 +15,7 @@ import (
 	"github.com/mcpjungle/mcpjungle/internal/service/toolgroup"
 	"github.com/mcpjungle/mcpjungle/internal/service/user"
 	"github.com/mcpjungle/mcpjungle/internal/telemetry"
+	"github.com/mcpjungle/mcpjungle/internal/version"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"go.opentelemetry.io/contrib/instrumentation/github.com/gin-gonic/gin/otelgin"
 )
@@ -22,27 +23,7 @@ import (
 const (
 	V0PathPrefix    = "/v0"
 	V0ApiPathPrefix = "/api" + V0PathPrefix
-	defaultVersion  = "dev"
 )
-
-// getVersion returns the server version string, using the same logic as CLI
-func getVersion() string {
-	if info, ok := debug.ReadBuildInfo(); ok && info.Main.Version != "" && info.Main.Version != "(devel)" {
-		return normalizeVersion(info.Main.Version)
-	}
-	return defaultVersion
-}
-
-// normalizeVersion ensures a consistent version format
-func normalizeVersion(v string) string {
-	if v == "" {
-		return v
-	}
-	if v[0] >= '0' && v[0] <= '9' {
-		return "v" + v
-	}
-	return v
-}
 
 type ServerOptions struct {
 	// Port is the HTTP ports to bind the server to
@@ -184,7 +165,7 @@ func (s *Server) setupRouter() (*gin.Engine, error) {
 	r.GET(
 		"/metadata",
 		func(c *gin.Context) {
-			c.JSON(200, gin.H{"version": getVersion()})
+			c.JSON(http.StatusOK, gin.H{"version": version.GetVersion()})
 		},
 	)
 
