@@ -26,6 +26,7 @@ import (
 
 	"github.com/mcpjungle/mcpjungle/client"
 	"github.com/mcpjungle/mcpjungle/cmd/config"
+	"github.com/mcpjungle/mcpjungle/internal/version"
 	"github.com/spf13/cobra"
 )
 
@@ -90,7 +91,7 @@ func Execute() error {
 	rootCmd.SetHelpFunc(customHelpFunc(defaultHelpFunc))
 
 	// Enable built-in --version behavior
-	rootCmd.Version = getVersion()
+	rootCmd.Version = version.GetVersion()
 	rootCmd.SetVersionTemplate(asciiArt + "\nMCPJungle {{.Version}}\n")
 
 	// only print usage and error messages if the command usage is incorrect
