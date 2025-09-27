@@ -10,6 +10,7 @@ import (
 	"net/url"
 
 	"github.com/mcpjungle/mcpjungle/internal/api"
+	"github.com/mcpjungle/mcpjungle/pkg/types"
 )
 
 // Client represents a client for interacting with the MCPJungle HTTP API
@@ -50,13 +51,8 @@ func (c *Client) newRequest(method, url string, body io.Reader) (*http.Request, 
 	return req, nil
 }
 
-// ServerMetadata represents the server metadata response
-type ServerMetadata struct {
-	Version string `json:"version"`
-}
-
 // GetServerMetadata fetches metadata information from the server
-func (c *Client) GetServerMetadata(ctx context.Context) (*ServerMetadata, error) {
+func (c *Client) GetServerMetadata(ctx context.Context) (*types.ServerMetadata, error) {
 	req, err := c.newRequest("GET", c.baseURL+"/metadata", nil)
 	if err != nil {
 		return nil, err
@@ -73,7 +69,7 @@ func (c *Client) GetServerMetadata(ctx context.Context) (*ServerMetadata, error)
 		return nil, fmt.Errorf("server returned status %d", resp.StatusCode)
 	}
 
-	var metadata ServerMetadata
+	var metadata types.ServerMetadata
 	if err := json.NewDecoder(resp.Body).Decode(&metadata); err != nil {
 		return nil, err
 	}
