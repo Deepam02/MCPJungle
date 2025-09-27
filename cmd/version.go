@@ -37,9 +37,9 @@ var versionCmd = &cobra.Command{
 		// Try to fetch server version
 		serverVersion, ok := getServerVersion()
 		if ok {
-			cmd.Printf("Server Version: %s\n", serverVersion)
+			cmd.Printf("Server Version: %s (server url: %s)\n", serverVersion, apiClient.BaseURL())
 		} else {
-			cmd.Printf("Server Version: Couldn't retrieve Server version at this time.\n")
+			cmd.Printf("Server Version: Couldn't retrieve Server version at this time. (server url: %s)\n", apiClient.BaseURL())
 		}
 	},
 	Annotations: map[string]string{

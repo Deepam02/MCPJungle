@@ -59,6 +59,11 @@ type RegisterServerInput struct {
 	Env map[string]string `json:"env"`
 }
 
+// ServerMetadata represents the server metadata response
+type ServerMetadata struct {
+	Version string `json:"version"`
+}
+
 // ValidateTransport validates the input string and returns the corresponding model.McpServerTransport.
 // It returns an error if the input is invalid or empty.
 func ValidateTransport(input string) (McpServerTransport, error) {
