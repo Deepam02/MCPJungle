@@ -16,26 +16,26 @@ import (
 // Only one database connection should be created and used throughout the application.
 
 const (
-	newDBFile = "mcpjungle.db"
-	oldDBFile = "mcp.db"
+	dbFilename           = "mcpjungle.db"
+	deprecatedDbFilename = "mcp.db"
 )
 
 // getSQLiteDBPath determines which SQLite database file to use.
 // It prioritizes the new mcpjungle.db file, but falls back to the old mcp.db file for backward compatibility.
 func getSQLiteDBPath() string {
 	// Check if the new database file exists
-	if _, err := os.Stat(newDBFile); err == nil {
-		return newDBFile
+	if _, err := os.Stat(dbFilename); err == nil {
+		return dbFilename
 	}
 	
 	// Check if the old database file exists (backward compatibility)
-	if _, err := os.Stat(oldDBFile); err == nil {
-		log.Printf("[db] WARNING: Using deprecated database file '%s'. Please consider renaming it to '%s' for future compatibility.", oldDBFile, newDBFile)
-		return oldDBFile
+	if _, err := os.Stat(deprecatedDbFilename); err == nil {
+		log.Printf("[db] WARNING: Using deprecated database file '%s'. Please consider renaming it to '%s' for future compatibility.", deprecatedDbFilename, dbFilename)
+		return deprecatedDbFilename
 	}
 	
 	// Neither exists, use the new file name
-	return newDBFile
+	return dbFilename
 }
 
 // NewDBConnection creates a new database connection based on the provided DSN.
