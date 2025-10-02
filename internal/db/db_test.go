@@ -12,7 +12,7 @@ import (
 func cleanupDBFiles(t *testing.T) {
 	dbFiles := []string{"mcp.db", "mcpjungle.db"}
 	extensions := []string{"", "-wal", "-shm"}
-	
+
 	for _, dbFile := range dbFiles {
 		for _, ext := range extensions {
 			file := dbFile + ext
@@ -27,7 +27,7 @@ func cleanupDBFiles(t *testing.T) {
 func cleanupDBFilesBenchmark(b *testing.B) {
 	dbFiles := []string{"mcp.db", "mcpjungle.db"}
 	extensions := []string{"", "-wal", "-shm"}
-	
+
 	for _, dbFile := range dbFiles {
 		for _, ext := range extensions {
 			file := dbFile + ext

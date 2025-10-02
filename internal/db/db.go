@@ -17,7 +17,7 @@ import (
 
 const (
 	dbFilename           = "mcpjungle.db"
-	deprecatedDbFilename = "mcp.db"
+	deprecatedDBFilename = "mcp.db"
 )
 
 // getSQLiteDBPath determines which SQLite database file to use.
@@ -27,13 +27,13 @@ func getSQLiteDBPath() string {
 	if _, err := os.Stat(dbFilename); err == nil {
 		return dbFilename
 	}
-	
+
 	// Check if the old database file exists (backward compatibility)
-	if _, err := os.Stat(deprecatedDbFilename); err == nil {
-		log.Printf("[db] WARNING: Using deprecated database file '%s'. Please consider renaming it to '%s' for future compatibility.", deprecatedDbFilename, dbFilename)
-		return deprecatedDbFilename
+	if _, err := os.Stat(deprecatedDBFilename); err == nil {
+		log.Printf("[db] WARNING: Using deprecated database file '%s'. Please consider renaming it to '%s' for future compatibility.", deprecatedDBFilename, dbFilename)
+		return deprecatedDBFilename
 	}
-	
+
 	// Neither exists, use the new file name
 	return dbFilename
 }
